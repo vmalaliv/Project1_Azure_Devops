@@ -1,0 +1,38 @@
+{
+	"variables": {
+		"client_id": "51b16538-9a18-472d-95bd-5fa76dbc844c",
+		"client_secret": "___8Q~DGXcoTENncMLkuJq4OsHzM6AOs-E87iaf8",
+		"subscription_id": "e858b464-95b4-4fac-94b2-d0bcde6c527f",
+		"app_name": "PRJCT1",
+		"rg_name":"Prjct1-RG"
+	},
+	"builders": [{
+		"type":"azure-arm",
+
+		"client_id": "{{user `client_id`}}",
+		"client_secret": "{{user `client_secret`}}",
+		"subscription_id": "{{user `subscription_id`}}",
+
+		"os_type": "Linux",
+		"image_publisher": "Canonical",
+		"image_offer": "UbuntuServer",
+		"image_sku": "18.04-LTS",
+
+		"managed_image_resource_group_name": "{{user `rg_name`}}",
+		"managed_image_name": "{{user `app_name`}}",
+
+		"location": "West Europe",
+		"vm_size": "Standard_F2",
+		"azure_tags": {
+			"Name": "{{user `app_name` }}"
+		  }
+	}],
+	"provisioners": [{
+		"inline": [
+			"echo 'Hello, World!' > index.html",
+			"nohup busybox httpd -f -p 80 &"
+		],
+		"inline_shebang": "/bin/sh -x",
+		"type": "shell"
+	}]
+}
